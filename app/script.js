@@ -32,7 +32,7 @@ const App = () => {
     window.close();
   };
 
-  if (time == 0 && status !== "rest" && status !== "off") {
+  if (time == 0 && status === "work") {
     setStatus("rest");
     setTime(20000);
     playBell();
