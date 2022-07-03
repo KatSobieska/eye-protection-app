@@ -7,8 +7,43 @@ const App = () => {
   const [time, setTime] = useState(0);
   const [timer, setTimer] = useState(null);
 
-  let seconds = String(Math.floor(time / 1000)).padStart(2, "0");
-  let minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const startTimer = () => {
+    setTime(1200000);
+    setStatus("work");
+    setTimer(
+      setInterval(() => {
+        setTime((time) => time - 10);
+      }, 10)
+    );
+  };
+
+  const playBell = () => {
+    const bell = new Audio("./sounds/bell.wav");
+    bell.play();
+  };
+
+  const stopTimer = () => {
+    clearInterval(timer);
+    setTime(0);
+    setStatus("off");
+  };
+
+  const closeApp = () => {
+    window.close();
+  };
+
+  if (time == 0 && status !== "rest" && status !== "off") {
+    setStatus("rest");
+    setTime(20000);
+    playBell();
+  } else if (time == 0 && status === "rest") {
+    setStatus("work");
+    setTime(1200000);
+    playBell();
+  }
+
+  let minutes = ("0" + Math.floor((time / 60000) % 60)).slice(-2);
+  let seconds = ("0" + (Math.floor((time / 1000) % 60) % 60)).slice(-2);
 
   return (
     <div>
@@ -33,9 +68,19 @@ const App = () => {
           {minutes}:{seconds}
         </div>
       )}
-      {status === "off" && <button className="btn">Start</button>}
-      {status !== "off" && <button className="btn">Stop</button>}
-      <button className="btn btn-close">X</button>
+      {status === "off" && (
+        <button className="btn" onClick={startTimer}>
+          Start
+        </button>
+      )}
+      {status !== "off" && (
+        <button className="btn" onClick={stopTimer}>
+          Stop
+        </button>
+      )}
+      <button className="btn btn-close" onClick={closeApp}>
+        X
+      </button>
     </div>
   );
 };
