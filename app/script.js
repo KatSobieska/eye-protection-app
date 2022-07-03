@@ -7,6 +7,9 @@ const App = () => {
   const [time, setTime] = useState(0);
   const [timer, setTimer] = useState(null);
 
+  let seconds = String(Math.floor(time / 1000)).padStart(2, "0");
+  let minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+
   return (
     <div>
       <h1>Protect your eyes</h1>
@@ -25,7 +28,11 @@ const App = () => {
       )}
       {status === "work" && <img src="./images/work.png" />}
       {status === "rest" && <img src="./images/rest.png" />}
-      {status !== "off" && <div className="timer">18:23</div>}
+      {status !== "off" && (
+        <div className="timer">
+          {minutes}:{seconds}
+        </div>
+      )}
       {status === "off" && <button className="btn">Start</button>}
       {status !== "off" && <button className="btn">Stop</button>}
       <button className="btn btn-close">X</button>
