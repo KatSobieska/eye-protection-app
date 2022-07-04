@@ -3,13 +3,18 @@ import { render } from "react-dom";
 import { useState } from "react";
 
 const App = () => {
-  const [status, setStatus] = useState("off");
+  const TIMER_STATUS = {
+    OFF: "off",
+    REST: "rest",
+    WORK: "work",
+  };
+  const [status, setStatus] = useState(TIMER_STATUS.OFF);
   const [time, setTime] = useState(0);
   const [timer, setTimer] = useState(null);
 
   const startTimer = () => {
     setTime(1200000);
-    setStatus("work");
+    setStatus(TIMER_STATUS.WORK);
     setTimer(
       setInterval(() => {
         setTime((time) => time - 10);
@@ -25,19 +30,19 @@ const App = () => {
   const stopTimer = () => {
     clearInterval(timer);
     setTime(0);
-    setStatus("off");
+    setStatus(TIMER_STATUS.OFF);
   };
 
   const closeApp = () => {
     window.close();
   };
 
-  if (time == 0 && status === "work") {
-    setStatus("rest");
+  if (time == 0 && status === TIMER_STATUS.WORK) {
+    setStatus(TIMER_STATUS.REST);
     setTime(20000);
     playBell();
-  } else if (time == 0 && status === "rest") {
-    setStatus("work");
+  } else if (time == 0 && status === TIMER_STATUS.REST) {
+    setStatus(TIMER_STATUS.WORK);
     setTime(1200000);
     playBell();
   }
@@ -48,7 +53,7 @@ const App = () => {
   return (
     <div>
       <h1>Protect your eyes</h1>
-      {status === "off" && (
+      {status === TIMER_STATUS.OFF && (
         <div>
           <p>
             According to optometrists in order to save your eyes, you should
@@ -61,19 +66,19 @@ const App = () => {
           </p>
         </div>
       )}
-      {status === "work" && <img src="./images/work.png" />}
-      {status === "rest" && <img src="./images/rest.png" />}
-      {status !== "off" && (
+      {status === TIMER_STATUS.WORK && <img src="./images/work.png" />}
+      {status === TIMER_STATUS.REST && <img src="./images/rest.png" />}
+      {status !== TIMER_STATUS.OFF && (
         <div className="timer">
           {minutes}:{seconds}
         </div>
       )}
-      {status === "off" && (
+      {status === TIMER_STATUS.OFF && (
         <button className="btn" onClick={startTimer}>
           Start
         </button>
       )}
-      {status !== "off" && (
+      {status !== TIMER_STATUS.OFF && (
         <button className="btn" onClick={stopTimer}>
           Stop
         </button>
